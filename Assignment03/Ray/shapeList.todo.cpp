@@ -170,7 +170,7 @@ void TriangleList::drawOpenGL( GLSLProgram * glslProgram ) const
 {
 	for (int i = 0; i < _vNum; i++)
 	{
-		triangles[i]->drawOpenGL(glslProgram);
+		shapes[i]->drawOpenGL(glslProgram);
 	}
 	//////////////////////////////
 	// Do OpenGL rendering here //
