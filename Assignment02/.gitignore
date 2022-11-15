@@ -1,0 +1,6 @@
+/Assignment2
+*.a
+*.o
+/test.bmp
+/.vscode
+/Rayfiles
