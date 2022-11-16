@@ -10,9 +10,9 @@ endif
 
 CFLAGS += -I. -I.. -std=c++14 -Wunused-result
 ifeq ($(detected_OS),Darwin)
-	LFLAGS += -L. -lRay -lGLEW -lImage -lUtil -framework GLUT -framework OpenGL -ljpeg
+	LFLAGS += -L. -lRay -lGLEW -lImage -lUtil -framework GLUT -framework OpenGL -ljpeg -pthread
 else
-	LFLAGS += -L. -lRay -lGLEW -lImage -lUtil -lglut -lGLU -lGL -ljpeg
+	LFLAGS += -L. -lRay -lGLEW -lImage -lUtil -lglut -lGLU -lGL -ljpeg -pthread
 endif
 
 CFLAGS_DEBUG = -DDEBUG -g3

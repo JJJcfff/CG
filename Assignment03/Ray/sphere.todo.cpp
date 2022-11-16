@@ -74,11 +74,57 @@ bool Sphere::isInside( Point3D p ) const
 
 void Sphere::drawOpenGL( GLSLProgram * glslProgram ) const
 {
-	//////////////////////////////
-	// Do OpenGL rendering here //
-	//////////////////////////////
-	WARN_ONCE( "method undefined" );
-
+	const int cplx = OpenGLTessellationComplexity+4;
+	const float latitude = Pi/cplx;
+	const float longtitude = 2.0*Pi/cplx;
+	
+	float phi;
+	float theta;
+	std::vector<Vertex> vertexData[cplx][cplx];
+	
+	for (int i = 0; i < cplx; i++) {
+		phi = Pi / 2 - i * latitude;
+		float z = radius * sin(phi);
+		for (int j = 0; j < cplx; j++) {
+			Vertex v;
+			theta = j * longtitude;
+			float x = radius * cos(phi) * cos(theta);
+			float y = radius * cos(phi) * sin(theta);
+			Point3D p(x, y, z);
+			v.position = p;
+			v.normal = (p - center).unit();
+			vertexData[i][j].push_back(v);
+		}
+	}
+	_material->drawOpenGL(glslProgram);
+	for (int i = 0; i < cplx; i++)
+	{
+		for (int j = 0; j < cplx; j++)
+		{
+			//get the four vertices
+			Vertex v1 = vertexData[i][j][0];
+			Vertex v2 = vertexData[(i + 1) % cplx][j][0];
+			Vertex v3 = vertexData[(i + 1) % cplx][(j + 1) % cplx][0];
+			Vertex v4 = vertexData[i][(j + 1) % cplx][0];
+			//draw the two triangles
+			glBegin(GL_TRIANGLES);
+			glNormal3f(v1.normal[0], v1.normal[1], v1.normal[2]);
+			glVertex3f(v1.position[0], v1.position[1], v1.position[2]);
+			glNormal3f(v2.normal[0], v2.normal[1], v2.normal[2]);
+			glVertex3f(v2.position[0], v2.position[1], v2.position[2]);
+			glNormal3f(v3.normal[0], v3.normal[1], v3.normal[2]);
+			glVertex3f(v3.position[0], v3.position[1], v3.position[2]);
+			
+			glNormal3f(v1.normal[0], v1.normal[1], v1.normal[2]);
+			glVertex3f(v1.position[0], v1.position[1], v1.position[2]);
+			glNormal3f(v3.normal[0], v3.normal[1], v3.normal[2]);
+			glVertex3f(v3.position[0], v3.position[1], v3.position[2]);
+			glNormal3f(v4.normal[0], v4.normal[1], v4.normal[2]);
+			glVertex3f(v4.position[0], v4.position[1], v4.position[2]);
+			glEnd();
+		}
+	}
 	// Sanity check to make sure that OpenGL state is good
 	ASSERT_OPEN_GL_STATE();	
 }
+

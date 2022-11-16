@@ -1,2 +1,5 @@
 /*.a
 *.o
+*.ray
+*.*.ray
+/Rayfiles

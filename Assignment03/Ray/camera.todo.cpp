@@ -28,9 +28,13 @@ void Camera::drawOpenGL( void ) const
 
 void Camera::rotateUp( Point3D center , float angle )
 {
+	//rotate the eye about the center by angle in the up direction
+
 	
-	
-	WARN_ONCE( "method undefined" );
+		WARN_ONCE( "method undefined" );
+
+
+
 }
 
 void Camera::rotateRight( Point3D center , float angle )
@@ -43,24 +47,19 @@ void Camera::rotateRight( Point3D center , float angle )
 
 void Camera::moveForward( float dist )
 {
-	//////////////////////////////////
-	// Move the camera forward here //
-	//////////////////////////////////
-	WARN_ONCE( "method undefined" );
+		WARN_ONCE( "method undefined" );
+gluLookAt(position[0]+dist, position[1], position[2], position[0] + forward[0] + dist, position[1] + forward[1], position[2] + forward[2], up[0], up[1], up[2]);
 }
 
 void Camera::moveRight( float dist )
 {
-	///////////////////////////////////////
-	// Move the camera to the right here //
-	///////////////////////////////////////
-	WARN_ONCE( "method undefined" );
+		WARN_ONCE( "method undefined" );
+gluLookAt(position[0], position[1], position[2]+dist, position[0] + forward[0], position[1] + forward[1], position[2] + forward[2]+dist, up[0], up[1], up[2]);
+
 }
 
 void Camera::moveUp( float dist )
 {
-	/////////////////////////////
-	// Move the camera up here //
-	/////////////////////////////
-	WARN_ONCE( "method undefined" );
+		WARN_ONCE( "method undefined" );
+gluLookAt(position[0], position[1]+dist, position[2], position[0] + forward[0], position[1] + forward[1] + dist, position[2] + forward[2], up[0], up[1], up[2]);
 }

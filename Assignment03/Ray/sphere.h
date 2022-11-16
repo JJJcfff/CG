@@ -47,6 +47,7 @@ namespace Ray
 		int processAllIntersections( const Util::Ray3D &ray , const Util::BoundingBox1D &range , const RayIntersectionFilter &rFilter , const RayIntersectionKernel &rKernel , ShapeProcessingInfo spInfo , unsigned int tIdx ) const;
 		bool isInside( Util::Point3D p ) const;
 		void drawOpenGL( GLSLProgram * glslProgram ) const;
+		void computeHalfVertex(const float v1[3], const float v2[3], float newV[3], double radius);
 	};
 }
 #endif // SPHERE_INCLUDED
