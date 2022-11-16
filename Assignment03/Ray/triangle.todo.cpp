@@ -58,17 +58,17 @@ bool Triangle::processFirstIntersection( const Util::Ray3D &ray , const Util::Bo
 
 void Triangle::drawOpenGL( GLSLProgram * glslProgram ) const
 {
-	// glBegin( GL_TRIANGLES );
-	// glNormal3f( _v[0]->normal[0] , _v[0]->normal[1] , _v[0]->normal[2] );
-	// glTexCoord2f( _v[0]->texCoordinate[0] , _v[0]->texCoordinate[1] );
-	// glVertex3f( _v[0]->position[0] , _v[0]->position[1] , _v[0]->position[2] );
-	// glNormal3f( _v[1]->normal[0] , _v[1]->normal[1] , _v[1]->normal[2] );
-	// glTexCoord2f( _v[1]->texCoordinate[0] , _v[1]->texCoordinate[1] );
-	// glVertex3f( _v[1]->position[0] , _v[1]->position[1] , _v[1]->position[2] );
-	// glNormal3f( _v[2]->normal[0] , _v[2]->normal[1] , _v[2]->normal[2] );
-	// glTexCoord2f( _v[2]->texCoordinate[0] , _v[2]->texCoordinate[1] );
-	// glVertex3f( _v[2]->position[0] , _v[2]->position[1] , _v[2]->position[2] );
-	// glEnd();
+	glBegin( GL_TRIANGLES );
+	glNormal3f( _v[0]->normal[0] , _v[0]->normal[1] , _v[0]->normal[2] );
+	glTexCoord2f( _v[0]->texCoordinate[0] , _v[0]->texCoordinate[1] );
+	glVertex3f( _v[0]->position[0] , _v[0]->position[1] , _v[0]->position[2] );
+	glNormal3f( _v[1]->normal[0] , _v[1]->normal[1] , _v[1]->normal[2] );
+	glTexCoord2f( _v[1]->texCoordinate[0] , _v[1]->texCoordinate[1] );
+	glVertex3f( _v[1]->position[0] , _v[1]->position[1] , _v[1]->position[2] );
+	glNormal3f( _v[2]->normal[0] , _v[2]->normal[1] , _v[2]->normal[2] );
+	glTexCoord2f( _v[2]->texCoordinate[0] , _v[2]->texCoordinate[1] );
+	glVertex3f( _v[2]->position[0] , _v[2]->position[1] , _v[2]->position[2] );
+	glEnd();
 	// Sanity check to make sure that OpenGL state is good
 	ASSERT_OPEN_GL_STATE();	
 }
