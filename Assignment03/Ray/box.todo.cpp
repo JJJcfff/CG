@@ -87,6 +87,7 @@ void v_n_t_store(std::vector<float> *vertices, Point3D p, Point3D n, Point2D t)
 
 void Box::drawOpenGL( GLSLProgram * glslProgram ) const
 {
+	glEnable(GL_TEXTURE_2D);
 	_material->drawOpenGL( glslProgram );
 	Point3D p1 = {center[0]-length[0]/2,center[1]-length[1]/2,center[2]+length[2]/2};
 	Point3D p2 = {center[0]+length[0]/2,center[1]-length[1]/2,center[2]+length[2]/2};
@@ -161,6 +162,7 @@ void Box::drawOpenGL( GLSLProgram * glslProgram ) const
 	
 	delete vertices;
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glDisable(GL_TEXTURE_2D);
 
 	
 	// glBegin(GL_TRIANGLES);
