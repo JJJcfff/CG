@@ -29,46 +29,29 @@ void Camera::drawOpenGL( void ) const
 
 void Camera::rotateUp( Point3D center , float angle )
 {
-	//glLoadIdentity();
-	WARN_ONCE( "method undefined" );
-
+	glTranslatef( center[0] , center[1] , center[2] );
+	glRotatef( angle*180/Pi , up[0] , up[1] , up[2] );
+	glTranslatef( -center[0] , -center[1] , -center[2] );
 }
 
 void Camera::rotateRight( Point3D center , float angle )
 {
-
-	WARN_ONCE( "method undefined" );
-
+	glTranslatef( center[0] , center[1] , center[2] );
+	glRotatef( angle*180/Pi , right[0] , right[1] , right[2] );
+	glTranslatef( -center[0] , -center[1] , -center[2] );
 }
 
 void Camera::moveForward( float dist )
 {
-	if (dist != 0){
-		//glLoadIdentity();
-		position += (forward.unit()) * dist;
-		Point3D lookAt = position + forward;
-		gluLookAt(position[0], position[1], position[2], lookAt[0], lookAt[1], lookAt[2], up[0], up[1], up[2]);
-	}
+	position += (forward.unit()) * dist;
 }
 
 void Camera::moveRight( float dist )
 {
-	if (dist != 0){
-		//glLoadIdentity();
-		Point3D right = Point3D::CrossProduct(forward,up);
-		position += (right.unit()) * dist;
-		Point3D lookAt = position + forward;
-		gluLookAt(position[0], position[1], position[2], lookAt[0], lookAt[1], lookAt[2], up[0], up[1], up[2]);
-	}
+	position += (right.unit()) * dist;
 }
 
 void Camera::moveUp( float dist )
 {
-	if (dist != 0)
-	{
-		position += (up.unit()) * dist;
-		Point3D lookAt = position + forward;
-		gluLookAt(position[0], position[1], position[2], lookAt[0], lookAt[1], lookAt[2], up[0], up[1], up[2]);
-	}
-	
+	position += (up.unit()) * dist;
 }

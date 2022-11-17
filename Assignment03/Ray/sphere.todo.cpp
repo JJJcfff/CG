@@ -86,6 +86,7 @@ void v_n_t_store(std::vector<float> *vertices, Vertex v)
 
 void Sphere::drawOpenGL( GLSLProgram * glslProgram ) const
 {
+	//glEnable(GL_TEXTURE_2D);
 	_material->drawOpenGL(glslProgram);
 	const int cplx = OpenGLTessellationComplexity+4;
 	const float latitude = Pi/cplx;
@@ -258,8 +259,8 @@ void Sphere::drawOpenGL( GLSLProgram * glslProgram ) const
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	
-	delete vertices;
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//glDisable(GL_TEXTURE_2D);
 
 	// Sanity check to make sure that OpenGL state is good
 	ASSERT_OPEN_GL_STATE();	
