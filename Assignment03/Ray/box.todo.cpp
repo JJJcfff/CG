@@ -145,17 +145,22 @@ void Box::drawOpenGL( GLSLProgram * glslProgram ) const
 	glGenBuffers(1, &box_VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, box_VBO);
 	glBufferData(GL_ARRAY_BUFFER, vertices->size()*sizeof(float), vertices->data(), GL_STATIC_DRAW);
+	
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
 	glVertexPointer(3, GL_FLOAT, 8*sizeof(float), 0);
 	glNormalPointer(GL_FLOAT, 8*sizeof(float), (void*)(3*sizeof(float)));
 	glTexCoordPointer(2, GL_FLOAT, 8*sizeof(float), (void*)(6*sizeof(float)));
 	glDrawArrays(GL_TRIANGLES, 0, vertices->size()/8);
+
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	
 	delete vertices;
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	
 	// glBegin(GL_TRIANGLES);

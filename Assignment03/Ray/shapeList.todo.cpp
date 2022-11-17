@@ -172,25 +172,20 @@ void TriangleList::drawOpenGL( GLSLProgram * glslProgram ) const
 {
 	glEnable(GL_TEXTURE_2D);
 	_material->drawOpenGL( glslProgram );
+	for (int i = 0; i < shapes.size(); i++)		shapes[i]->drawOpenGL(glslProgram);
 
 	// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _elementBufferID);
 	// glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferID);	
-
-
 	// glEnableVertexAttribArray(0);
 	// glEnableVertexAttribArray(1);
 	// glEnableVertexAttribArray(2);
-
 	// glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(0));
 	// glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(12));
 	// glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(24));
-
 	// glDrawElements(GL_TRIANGLES, _vNum, GL_UNSIGNED_INT, NULL);
-
 	// glDisableVertexAttribArray(0);
 	// glDisableVertexAttribArray(1);
 	// glDisableVertexAttribArray(2);
-
 
 	// glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferID);
 
@@ -198,7 +193,7 @@ void TriangleList::drawOpenGL( GLSLProgram * glslProgram ) const
 	// glEnableClientState(GL_NORMAL_ARRAY);             
  	// glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-	// glVertexPointer(3, GL_FLOAT,  8*sizeof( GLfloat ), BUFFER_OFFSET(0));
+	// glVertexPointer(3, GL_FLOAT,  8*sizeof( GLfloat ), 0);
 	// glNormalPointer(GL_FLOAT,  8*sizeof( GLfloat ), BUFFER_OFFSET(3*sizeof( GLfloat )));
 	// glTexCoordPointer(2, GL_FLOAT,  8*sizeof( GLfloat ), BUFFER_OFFSET(6*sizeof( GLfloat )));
 
@@ -209,15 +204,10 @@ void TriangleList::drawOpenGL( GLSLProgram * glslProgram ) const
 	// glDisableClientState(GL_NORMAL_ARRAY);         // deactivate vertex normal
 	// glDisableClientState(GL_TEXTURE_COORD_ARRAY);       // deactivate texture coords
 
-	// bind with 0, switch back to normal pointer operation
 
 	ASSERT_OPEN_GL_STATE();	
 	
-	for (int i = 0; i < shapes.size(); i++)		shapes[i]->drawOpenGL(glslProgram);
-
-
 	glDisable(GL_TEXTURE_2D);
-
 	// Sanity check to make sure that OpenGL state is good
 	ASSERT_OPEN_GL_STATE();	
 }

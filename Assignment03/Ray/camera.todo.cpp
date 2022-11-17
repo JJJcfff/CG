@@ -43,25 +43,32 @@ void Camera::rotateRight( Point3D center , float angle )
 
 void Camera::moveForward( float dist )
 {
-	//glLoadIdentity();
-	position += (forward.unit()) * dist;
-	Point3D lookAt = position + forward;
-	gluLookAt(position[0], position[1], position[2], lookAt[0], lookAt[1], lookAt[2], up[0], up[1], up[2]);
+	if (dist != 0){
+		//glLoadIdentity();
+		position += (forward.unit()) * dist;
+		Point3D lookAt = position + forward;
+		gluLookAt(position[0], position[1], position[2], lookAt[0], lookAt[1], lookAt[2], up[0], up[1], up[2]);
+	}
 }
 
 void Camera::moveRight( float dist )
 {
-	//glLoadIdentity();
-	Point3D right = Point3D::CrossProduct(forward,up);
-	position += (right.unit()) * dist;
-	Point3D lookAt = position + forward;
-	gluLookAt(position[0], position[1], position[2], lookAt[0], lookAt[1], lookAt[2], up[0], up[1], up[2]);
+	if (dist != 0){
+		//glLoadIdentity();
+		Point3D right = Point3D::CrossProduct(forward,up);
+		position += (right.unit()) * dist;
+		Point3D lookAt = position + forward;
+		gluLookAt(position[0], position[1], position[2], lookAt[0], lookAt[1], lookAt[2], up[0], up[1], up[2]);
+	}
 }
 
 void Camera::moveUp( float dist )
 {
-	//glLoadIdentity();
-	position += (up.unit()) * dist;
-	Point3D lookAt = position + forward;
-	gluLookAt(position[0], position[1], position[2], lookAt[0], lookAt[1], lookAt[2], up[0], up[1], up[2]);
+	if (dist != 0)
+	{
+		position += (up.unit()) * dist;
+		Point3D lookAt = position + forward;
+		gluLookAt(position[0], position[1], position[2], lookAt[0], lookAt[1], lookAt[2], up[0], up[1], up[2]);
+	}
+	
 }
