@@ -170,6 +170,8 @@ void StaticAffineShape::init( const LocalSceneData &data )
 //////////////////
 void TriangleList::drawOpenGL( GLSLProgram * glslProgram ) const
 {
+	glEnable(GL_TEXTURE_2D);
+	_material->drawOpenGL( glslProgram );
 
 	// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _elementBufferID);
 	// glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferID);	
@@ -210,15 +212,12 @@ void TriangleList::drawOpenGL( GLSLProgram * glslProgram ) const
 	// bind with 0, switch back to normal pointer operation
 
 	ASSERT_OPEN_GL_STATE();	
-	for (int i = 0; i < shapes.size(); i++)
-	{
-		shapes[i]->drawOpenGL(glslProgram);
-	}
+	
+	for (int i = 0; i < shapes.size(); i++)		shapes[i]->drawOpenGL(glslProgram);
 
-	_material->drawOpenGL(glslProgram);
 
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glDisable(GL_TEXTURE_2D);
+
 	// Sanity check to make sure that OpenGL state is good
 	ASSERT_OPEN_GL_STATE();	
 }

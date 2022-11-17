@@ -74,6 +74,7 @@ bool Sphere::isInside( Point3D p ) const
 
 void Sphere::drawOpenGL( GLSLProgram * glslProgram ) const
 {
+	_material->drawOpenGL(glslProgram);
 	const int cplx = OpenGLTessellationComplexity+4;
 	const float latitude = Pi/cplx;
 	const float longtitude = 2.0*Pi/cplx;
@@ -81,7 +82,7 @@ void Sphere::drawOpenGL( GLSLProgram * glslProgram ) const
 	float phi;
 	float theta;
 	std::vector<Vertex> vertexData[cplx][cplx];
-	
+
 	for (int i = 0; i < cplx; i++) {
 		phi = Pi / 2 - i * latitude;
 		float z = radius * sin(phi);
@@ -93,10 +94,118 @@ void Sphere::drawOpenGL( GLSLProgram * glslProgram ) const
 			Point3D p(x, y, z);
 			v.position = p;
 			v.normal = (p - center).unit();
+			v.texCoordinate = Point2D((float)j / cplx, (float)i / cplx);
 			vertexData[i][j].push_back(v);
 		}
 	}
-	_material->drawOpenGL(glslProgram);
+
+	// std::vector<float> vertexArray;
+	// std::vector<unsigned int> indexArray;
+	// GLuint sph_vbo;
+	// GLuint sph_ebo;
+
+	// for (int i = 0; i < cplx; i++)
+	// {
+	// 	for (int j = 0; j < cplx; j++)
+	// 	{
+	// 		//get the four vertices
+	// 		Vertex v1 = vertexData[i][j][0];
+	// 		Vertex v2 = vertexData[(i + 1) % cplx][j][0];
+	// 		Vertex v3 = vertexData[(i + 1) % cplx][(j + 1) % cplx][0];
+	// 		Vertex v4 = vertexData[i][(j + 1) % cplx][0];
+
+	// 		vertexArray.push_back(v1.position[0]);
+	// 		vertexArray.push_back(v1.position[1]);
+	// 		vertexArray.push_back(v1.position[2]);
+	// 		vertexArray.push_back(v1.normal[0]);
+	// 		vertexArray.push_back(v1.normal[1]);
+	// 		vertexArray.push_back(v1.normal[2]);
+	// 		vertexArray.push_back(v1.texCoordinate[0]);
+	// 		vertexArray.push_back(v1.texCoordinate[1]);
+	// 		indexArray.push_back(i*j);
+
+	// 		vertexArray.push_back(v2.position[0]);
+	// 		vertexArray.push_back(v2.position[1]);
+	// 		vertexArray.push_back(v2.position[2]);
+	// 		vertexArray.push_back(v2.normal[0]);
+	// 		vertexArray.push_back(v2.normal[1]);
+	// 		vertexArray.push_back(v2.normal[2]);
+	// 		vertexArray.push_back(v2.texCoordinate[0]);
+	// 		vertexArray.push_back(v2.texCoordinate[1]);
+	// 		indexArray.push_back((i + 1) % cplx * j);
+
+	// 		vertexArray.push_back(v3.position[0]);
+	// 		vertexArray.push_back(v3.position[1]);
+	// 		vertexArray.push_back(v3.position[2]);
+	// 		vertexArray.push_back(v3.normal[0]);
+	// 		vertexArray.push_back(v3.normal[1]);
+	// 		vertexArray.push_back(v3.normal[2]);
+	// 		vertexArray.push_back(v3.texCoordinate[0]);
+	// 		vertexArray.push_back(v3.texCoordinate[1]);
+	// 		indexArray.push_back((i + 1) % cplx * (j + 1) % cplx);
+			
+	// 		vertexArray.push_back(v1.position[0]);
+	// 		vertexArray.push_back(v1.position[1]);
+	// 		vertexArray.push_back(v1.position[2]);
+	// 		vertexArray.push_back(v1.normal[0]);
+	// 		vertexArray.push_back(v1.normal[1]);
+	// 		vertexArray.push_back(v1.normal[2]);
+	// 		vertexArray.push_back(v1.texCoordinate[0]);
+	// 		vertexArray.push_back(v1.texCoordinate[1]);
+	// 		indexArray.push_back(i*j);
+
+	// 		vertexArray.push_back(v3.position[0]);
+	// 		vertexArray.push_back(v3.position[1]);
+	// 		vertexArray.push_back(v3.position[2]);
+	// 		vertexArray.push_back(v3.normal[0]);
+	// 		vertexArray.push_back(v3.normal[1]);
+	// 		vertexArray.push_back(v3.normal[2]);
+	// 		vertexArray.push_back(v3.texCoordinate[0]);
+	// 		vertexArray.push_back(v3.texCoordinate[1]);
+	// 		indexArray.push_back((i + 1) % cplx * (j + 1) % cplx);
+
+	// 		vertexArray.push_back(v4.position[0]);
+	// 		vertexArray.push_back(v4.position[1]);
+	// 		vertexArray.push_back(v4.position[2]);
+	// 		vertexArray.push_back(v4.normal[0]);
+	// 		vertexArray.push_back(v4.normal[1]);
+	// 		vertexArray.push_back(v4.normal[2]);
+	// 		vertexArray.push_back(v4.texCoordinate[0]);
+	// 		vertexArray.push_back(v4.texCoordinate[1]);
+	// 		indexArray.push_back(i * (j + 1) % cplx);
+	// 	}
+	// }
+
+	// glGenBuffers(1, &sph_vbo);
+	// glBindBuffer(GL_ARRAY_BUFFER, sph_vbo);
+	// glBufferData(GL_ARRAY_BUFFER, vertexArray.size() * sizeof(float), &vertexArray[0], GL_STATIC_DRAW);
+
+	// glGenBuffers(1, &sph_ebo);
+	// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sph_ebo);
+	// glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexArray.size() * sizeof(unsigned int), &indexArray[0], GL_STATIC_DRAW);
+
+	// //draw
+	// glBindBuffer(GL_ARRAY_BUFFER, sph_vbo);
+	// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sph_ebo);
+
+	// glEnableVertexAttribArray(0);
+	// glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), 0);
+
+	// glEnableVertexAttribArray(1);
+	// glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+
+	// glEnableVertexAttribArray(2);
+	// glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+
+	// glDrawElements(GL_TRIANGLES, indexArray.size(), GL_UNSIGNED_INT, (void*)0);
+
+	// glDisableVertexAttribArray(0);
+	// glDisableVertexAttribArray(1);
+	// glDisableVertexAttribArray(2);
+
+	// glBindBuffer(GL_ARRAY_BUFFER, 0);
+	// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
 	for (int i = 0; i < cplx; i++)
 	{
 		for (int j = 0; j < cplx; j++)
