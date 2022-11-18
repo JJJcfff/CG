@@ -57,11 +57,18 @@ Point3D PointLight::transparency( const RayShapeIntersectionInfo &iInfo , const 
 
 void PointLight::drawOpenGL( int index , GLSLProgram * glslProgram ) const
 {
-	//////////////////////////////
-	// Do OpenGL rendering here //
-	//////////////////////////////
-	WARN_ONCE( "method undefined" );
-
+	GLfloat pos[4] = { (GLfloat)_location[0], (GLfloat)_location[1], (GLfloat)_location[2], 0.0f };
+	GLfloat amb[4] = {  (GLfloat)_ambient[0],    (GLfloat)_ambient[1],    (GLfloat)_ambient[2], 1.0f };
+	GLfloat dif[4] = {  (GLfloat)_diffuse[0],    (GLfloat)_diffuse[1],    (GLfloat)_diffuse[2], 1.0f };
+	GLfloat spe[4] = {  (GLfloat)_specular[0],   (GLfloat)_specular[1],   (GLfloat)_specular[2], 1.0f };
+	glLightfv(GL_LIGHT0 + index, GL_POSITION, pos);
+	glLightfv(GL_LIGHT0 + index, GL_AMBIENT, amb);
+	glLightfv(GL_LIGHT0 + index, GL_DIFFUSE, dif);
+	glLightfv(GL_LIGHT0 + index, GL_SPECULAR, spe);
+	glLightf(GL_LIGHT0 + index, GL_CONSTANT_ATTENUATION, (GLfloat)_constAtten);
+	glLightf(GL_LIGHT0 + index, GL_LINEAR_ATTENUATION, (GLfloat)_linearAtten);
+	glLightf(GL_LIGHT0 + index, GL_QUADRATIC_ATTENUATION, (GLfloat)_quadAtten);
+	glEnable(GL_LIGHT0 + index);
 	// Sanity check to make sure that OpenGL state is good
 	ASSERT_OPEN_GL_STATE();	
 }

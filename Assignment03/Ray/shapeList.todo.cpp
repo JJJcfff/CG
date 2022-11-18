@@ -172,38 +172,25 @@ void TriangleList::drawOpenGL( GLSLProgram * glslProgram ) const
 {
 	glEnable(GL_TEXTURE_2D);
 	_material->drawOpenGL( glslProgram );
-	for (int i = 0; i < shapes.size(); i++)		shapes[i]->drawOpenGL(glslProgram);
+	//for (int i = 0; i < shapes.size(); i++)		shapes[i]->drawOpenGL(glslProgram);
 
-	// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _elementBufferID);
-	// glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferID);	
-	// glEnableVertexAttribArray(0);
-	// glEnableVertexAttribArray(1);
-	// glEnableVertexAttribArray(2);
-	// glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(0));
-	// glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(12));
-	// glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), BUFFER_OFFSET(24));
-	// glDrawElements(GL_TRIANGLES, _vNum, GL_UNSIGNED_INT, NULL);
-	// glDisableVertexAttribArray(0);
-	// glDisableVertexAttribArray(1);
-	// glDisableVertexAttribArray(2);
 
-	// glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferID);
+	glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferID);
 
-	// glEnableClientState(GL_VERTEX_ARRAY);     
-	// glEnableClientState(GL_NORMAL_ARRAY);             
- 	// glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glEnableClientState(GL_VERTEX_ARRAY);     
+	glEnableClientState(GL_NORMAL_ARRAY);             
+ 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-	// glVertexPointer(3, GL_FLOAT,  8*sizeof( GLfloat ), 0);
-	// glNormalPointer(GL_FLOAT,  8*sizeof( GLfloat ), BUFFER_OFFSET(3*sizeof( GLfloat )));
-	// glTexCoordPointer(2, GL_FLOAT,  8*sizeof( GLfloat ), BUFFER_OFFSET(6*sizeof( GLfloat )));
+	glVertexPointer(3, GL_FLOAT,  0, 0);
+	glNormalPointer(GL_FLOAT,  0, BUFFER_OFFSET(_vNum*3*sizeof( GLfloat )));
+	glTexCoordPointer(2, GL_FLOAT,  0, BUFFER_OFFSET(_vNum*6*sizeof( GLfloat )));
 
-	// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _elementBufferID);
-	// glDrawElements(GL_TRIANGLES, _tNum, GL_UNSIGNED_INT, BUFFER_OFFSET(0));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _elementBufferID);
+	glDrawElements(GL_TRIANGLES, 3*_tNum, GL_UNSIGNED_INT, BUFFER_OFFSET(0));
 
-	// glDisableClientState(GL_VERTEX_ARRAY);         // deactivate vertex position
-	// glDisableClientState(GL_NORMAL_ARRAY);         // deactivate vertex normal
-	// glDisableClientState(GL_TEXTURE_COORD_ARRAY);       // deactivate texture coords
-
+	glDisableClientState(GL_VERTEX_ARRAY);         
+	glDisableClientState(GL_NORMAL_ARRAY);         
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);  
 
 	ASSERT_OPEN_GL_STATE();	
 	

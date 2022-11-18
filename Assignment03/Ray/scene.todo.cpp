@@ -52,6 +52,8 @@ Point3D Scene::getColor( Ray3D ray , int rDepth , Point3D cLimit , unsigned int 
 //////////////
 void Material::drawOpenGL( GLSLProgram * glslProgram ) const
 {
+	//glEnable(GL_BLEND); //Enable blending.
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); //Set blending function.
 	GLfloat m_ambient[4]  = {(GLfloat) ambient[0] , (GLfloat)ambient[1]   , (GLfloat)ambient[2] , 1. };
 	GLfloat m_diffuse[4]  = {(GLfloat) diffuse[0] , (GLfloat)diffuse[1]   , (GLfloat)diffuse[2] , 1. };
 	GLfloat m_specular[4] = {(GLfloat) specular[0] ,(GLfloat) specular[1] , (GLfloat)specular[2] , 1. };
@@ -66,6 +68,7 @@ void Material::drawOpenGL( GLSLProgram * glslProgram ) const
 	{	
 		glBindTexture(GL_TEXTURE_2D, tex->_openGLHandle);
 	}
+	//glDisable(GL_BLEND);
 	// Sanity check to make sure that OpenGL state is good
 	ASSERT_OPEN_GL_STATE();	
 }
