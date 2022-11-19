@@ -172,22 +172,26 @@ void Cylinder::drawOpenGL( GLSLProgram *glslProgram ) const
 		Vertex v1;
 		v1.position = Point3D( center[0]+x , center[1]+height/2 , center[2]+y );
 		v1.normal = Point3D( x , 0 , y ).unit();
-		v1.texCoordinate = Point2D( (x+radius)/(2*radius) , (y+radius)/(2*radius) );
+		//v1.texCoordinate = Point2D( (x+radius)/(2*radius) , (y+radius)/(2*radius) );
+		v1.texCoordinate = Point2D( (float)i/num_slices , 1 );
 
 		Vertex v2;
 		v2.position = Point3D( center[0]+x2 , center[1]+height/2 , center[2]+y2 );
 		v2.normal = Point3D( x2 , 0 , y2 ).unit();
-		v2.texCoordinate = Point2D( (x2+radius)/(2*radius) , (y2+radius)/(2*radius) );
+		//v2.texCoordinate = Point2D( (x2+radius)/(2*radius) , (y2+radius)/(2*radius) );
+		v2.texCoordinate = Point2D( (float)(i+1)/num_slices , 1 );
 
 		Vertex v3;
 		v3.position = Point3D( center[0]+x , center[1]-height/2 , center[2]+y );
 		v3.normal = Point3D( x , 0 , y ).unit();
-		v3.texCoordinate = Point2D( (x+radius)/(2*radius) , (y+radius)/(2*radius) );
+		//v3.texCoordinate = Point2D( (x+radius)/(2*radius) , (y+radius)/(2*radius) );
+		v3.texCoordinate = Point2D( (float)i/num_slices , 0 );
 
 		Vertex v4;
 		v4.position = Point3D( center[0]+x2 , center[1]-height/2 , center[2]+y2 );
 		v4.normal = Point3D( x2 , 0 , y2 ).unit();
-		v4.texCoordinate = Point2D( (x2+radius)/(2*radius) , (y2+radius)/(2*radius) );
+		//v4.texCoordinate = Point2D( (x2+radius)/(2*radius) , (y2+radius)/(2*radius) );
+		v4.texCoordinate = Point2D( (float)(i+1)/num_slices , 0 );
 
 		v_n_t_store_cyn(vertices, v1);
 		v_n_t_store_cyn(vertices, v2);
