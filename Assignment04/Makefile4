@@ -8,7 +8,7 @@ else
     detected_OS := $(shell uname)
 endif
 
-CFLAGS += -I. -I.. -std=c++14 -Wunused-result
+CFLAGS += -I. -I.. -std=c++14 -Wunused-result -pthread
 ifeq ($(detected_OS),Darwin)
 	LFLAGS += -L. -lRay -lGLEW -lImage -lUtil -framework GLUT -framework OpenGL -ljpeg
 else
