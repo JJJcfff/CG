@@ -21,51 +21,37 @@ Ray3D Camera::getRay( int i , int j , int width , int height ) const
 
 void Camera::drawOpenGL( void ) const
 {
-	//////////////////////////////
-	// Do OpenGL rendering here //
-	//////////////////////////////
-	WARN_ONCE( "method undefined" );
-
+	Point3D lookAt = position + forward;
+	gluLookAt( position[0] , position[1] , position[2] , lookAt[0] , lookAt[1] , lookAt[2] , up[0] , up[1] , up[2] );
 	// Sanity check to make sure that OpenGL state is good
 	ASSERT_OPEN_GL_STATE();	
 }
 
 void Camera::rotateUp( Point3D center , float angle )
 {
-	///////////////////////////////////////////////////
-	// Rotate the camera about the up direction here //
-	///////////////////////////////////////////////////
-	WARN_ONCE( "method undefined" );
+	glTranslatef( center[0] , center[1] , center[2] );
+	glRotatef( angle*180/Pi , up[0] , up[1] , up[2] );
+	glTranslatef( -center[0] , -center[1] , -center[2] );
 }
 
 void Camera::rotateRight( Point3D center , float angle )
 {
-	//////////////////////////////////////////////////////
-	// Rotate the camera about the right direction here //
-	//////////////////////////////////////////////////////
-	WARN_ONCE( "method undefined" );
+	glTranslatef( center[0] , center[1] , center[2] );
+	glRotatef( angle*180/Pi , right[0] , right[1] , right[2] );
+	glTranslatef( -center[0] , -center[1] , -center[2] );
 }
 
 void Camera::moveForward( float dist )
 {
-	//////////////////////////////////
-	// Move the camera forward here //
-	//////////////////////////////////
-	WARN_ONCE( "method undefined" );
+	position += (forward.unit()) * dist;
 }
 
 void Camera::moveRight( float dist )
 {
-	///////////////////////////////////////
-	// Move the camera to the right here //
-	///////////////////////////////////////
-	WARN_ONCE( "method undefined" );
+	position += (right.unit()) * dist;
 }
 
 void Camera::moveUp( float dist )
 {
-	/////////////////////////////
-	// Move the camera up here //
-	/////////////////////////////
-	WARN_ONCE( "method undefined" );
+	position += (up.unit()) * dist;
 }

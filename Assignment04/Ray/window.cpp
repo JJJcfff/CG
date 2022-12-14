@@ -438,13 +438,15 @@ void Window::View( Scene &s , int width , int height )
 	glutInit( &argc , &argv );
 	delete[] argv;
 
-	glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+	glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_ACCUM);
 	glutCreateWindow( "OpenGL Visualization" );
 	if( glewInit()!=GLEW_OK ) ERROR_OUT( "glewInit failed" );
 	glutInitWindowSize( width , height );
 	glutInitWindowPosition( 0 , 0 );
 	glClearColor( 0. , 0. , 0. , 1. );
 	glutReshapeWindow( width , height );
+	glClearAccum( 0. , 0. , 0. , 0. );
+	glClear( GL_ACCUM_BUFFER_BIT );
 
 	// Initialize the event handlers
 	glutDisplayFunc      ( DisplayFunction );

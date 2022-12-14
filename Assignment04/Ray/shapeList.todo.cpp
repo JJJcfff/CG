@@ -11,10 +11,8 @@ using namespace Util;
 ////////////////
 void Difference::updateBoundingBox( void )
 {
-	///////////////////////////////
-	// Set the _bBox object here //
-	///////////////////////////////
-	WARN_ONCE( "method undefined" );
+	_shape0->updateBoundingBox();
+	_bBox = _shape0->boundingBox();
 }
 
 bool Difference::processFirstIntersection( const Ray3D &ray , const BoundingBox1D &range , const RayIntersectionFilter &rFilter , const RayIntersectionKernel &rKernel , ShapeProcessingInfo spInfo , unsigned int tIdx ) const
@@ -85,10 +83,16 @@ void ShapeList::init( const LocalSceneData &data )
 
 void ShapeList::updateBoundingBox( void )
 {
-	///////////////////////////////
-	// Set the _bBox object here //
-	///////////////////////////////
-	WARN_ONCE( "method undefined" );
+	Point3D *pList = new Point3D[shapes.size()*2];
+	for( int i=0 ; i<shapes.size() ; i++ )
+	{
+		shapes[i]->updateBoundingBox();
+		_bBox = shapes[i]->boundingBox();
+		pList[2*i  ] = _bBox[0];
+		pList[2*i+1] = _bBox[1];
+	}
+	_bBox = BoundingBox3D( pList , (int)shapes.size()*2 );
+	delete[] pList;
 }
 
 void ShapeList::initOpenGL( void )
@@ -104,10 +108,10 @@ void ShapeList::initOpenGL( void )
 
 void ShapeList::drawOpenGL( GLSLProgram * glslProgram ) const
 {
-	//////////////////////////////
-	// Do OpenGL rendering here //
-	//////////////////////////////
-	WARN_ONCE( "method undefined" );
+	for (int i = 0; i < shapes.size(); i++)
+	{
+		shapes[i]->drawOpenGL(glslProgram);
+	}
 
 	// Sanity check to make sure that OpenGL state is good
 	ASSERT_OPEN_GL_STATE();	
@@ -128,21 +132,20 @@ bool AffineShape::isInside( Point3D p ) const
 
 void AffineShape::updateBoundingBox( void )
 {
-	///////////////////////////////
-	// Set the _bBox object here //
-	///////////////////////////////
-	WARN_ONCE( "method undefined" );
 	_shape->updateBoundingBox();
+	_bBox = getMatrix() * _shape->boundingBox();
 }
 
 void AffineShape::drawOpenGL( GLSLProgram * glslProgram ) const
 {
-	//////////////////////////////
-	// Do OpenGL rendering here //
-	//////////////////////////////
-	WARN_ONCE( "method undefined" );
+	Matrix4D m = getMatrix();
+	GLfloat glm[16];
+	for (int i = 0; i < 4; i++) for (int j = 0; j < 4; j++) glm[4*i+j] = (float) m(j, i);
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glMultMatrixf(glm);
 	_shape->drawOpenGL( glslProgram );
-
+	glPopMatrix();
 	// Sanity check to make sure that OpenGL state is good
 	ASSERT_OPEN_GL_STATE();	
 }
@@ -161,17 +164,37 @@ void StaticAffineShape::init( const LocalSceneData &data )
 	_primitiveNum = _shape->primitiveNum();
 }
 
+#define BUFFER_OFFSET(i) ((void *)(i))
 //////////////////
 // TriangleList //
 //////////////////
-
 void TriangleList::drawOpenGL( GLSLProgram * glslProgram ) const
 {
-	//////////////////////////////
-	// Do OpenGL rendering here //
-	//////////////////////////////
-	WARN_ONCE( "method undefined" );
+	glEnable(GL_TEXTURE_2D);
+	_material->drawOpenGL( glslProgram );
+	//for (int i = 0; i < shapes.size(); i++)		shapes[i]->drawOpenGL(glslProgram);
 
+
+	glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferID);
+
+	glEnableClientState(GL_VERTEX_ARRAY);     
+	glEnableClientState(GL_NORMAL_ARRAY);             
+ 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	glVertexPointer(3, GL_FLOAT,  0, 0);
+	glNormalPointer(GL_FLOAT,  0, BUFFER_OFFSET(_vNum*3*sizeof( GLfloat )));
+	glTexCoordPointer(2, GL_FLOAT,  0, BUFFER_OFFSET(_vNum*6*sizeof( GLfloat )));
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _elementBufferID);
+	glDrawElements(GL_TRIANGLES, 3*_tNum, GL_UNSIGNED_INT, BUFFER_OFFSET(0));
+
+	glDisableClientState(GL_VERTEX_ARRAY);         
+	glDisableClientState(GL_NORMAL_ARRAY);         
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);  
+
+	ASSERT_OPEN_GL_STATE();	
+	
+	glDisable(GL_TEXTURE_2D);
 	// Sanity check to make sure that OpenGL state is good
 	ASSERT_OPEN_GL_STATE();	
 }
@@ -266,10 +289,9 @@ void Union::init( const LocalSceneData &data )
 
 void Union::updateBoundingBox( void )
 {
-	///////////////////////////////
-	// Set the _bBox object here //
-	///////////////////////////////
-	WARN_ONCE( "method undefined" );
+	_shapeList.updateBoundingBox();
+	_bBox = _shapeList.shapes[0]->boundingBox();
+	for( int i=1 ; i<_shapeList.shapes.size() ; i++ ) _bBox ^= _shapeList.shapes[i]->boundingBox();
 }
 
 bool Union::isInside( Point3D p ) const
@@ -314,10 +336,9 @@ void Intersection::init( const LocalSceneData &data )
 
 void Intersection::updateBoundingBox( void )
 {
-	///////////////////////////////
-	// Set the _bBox object here //
-	///////////////////////////////
-	WARN_ONCE( "method undefined" );
+	_shapeList.updateBoundingBox();
+	_bBox = _shapeList.shapes[0]->boundingBox();
+	for( int i=1 ; i<_shapeList.shapes.size() ; i++ ) _bBox ^= _shapeList.shapes[i]->boundingBox();
 }
 
 bool Intersection::isInside( Point3D p ) const

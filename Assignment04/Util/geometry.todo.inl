@@ -34,21 +34,40 @@ namespace Util
 	template< unsigned int Dim >
 	Matrix< Dim , Dim > Matrix< Dim , Dim >::Exp( const Matrix &m , int terms )
 	{
-		//////////////////////////////////////
-		// Compute the matrix exponent here //
-		//////////////////////////////////////
-		WARN_ONCE( "method undefined" );
-		return Matrix();
+		///////////////////////////////////////
+		// Compute the matrix exponential here //
+		///////////////////////////////////////
+		Matrix< Dim , Dim > i_m = Identity();
+		Matrix< Dim , Dim > m_pow = Identity();
+		for( int i=1 ; i<=terms ; i++ )
+		{
+			m_pow *= m;
+			i_m += m_pow / (double)i;
+		}
+		return i_m;
 	}
 
+	// template< unsigned int Dim >
+	// Matrix< Dim , Dim > Matrix< Dim , Dim >::closestRotation( void ) const
+	// {
+	// 	///////////////////////////////////////
+	// 	// Compute the closest rotation here //
+	// 	///////////////////////////////////////
+	// 	Matrix< Dim , Dim > Q , R;
+	// 	SVD( Q , R );
+	// 	return Q * R.Transpose();
+	// }
+
+	
 	template< unsigned int Dim >
 	Matrix< Dim , Dim > Matrix< Dim , Dim >::closestRotation( void ) const
 	{
 		///////////////////////////////////////
 		// Compute the closest rotation here //
 		///////////////////////////////////////
-		WARN_ONCE( "method undefined" );
-		return Matrix();
+		Matrix<Dim, Dim> r1, d, r2;
+		SVD(r1, d, r2);
+		return r1*(d*r2);
 	}
 
 	/////////////////

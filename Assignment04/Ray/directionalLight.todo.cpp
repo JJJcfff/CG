@@ -57,11 +57,17 @@ Point3D DirectionalLight::transparency( const RayShapeIntersectionInfo &iInfo , 
 
 void DirectionalLight::drawOpenGL( int index , GLSLProgram * glslProgram ) const
 {
-	//////////////////////////////
-	// Do OpenGL rendering here //
-	//////////////////////////////
-	WARN_ONCE( "method undefined" );
-
+	GLfloat pos[4] = { -(GLfloat)_direction[0], -(GLfloat)_direction[1], -(GLfloat)_direction[2], 0.0f };
+	GLfloat dir[3] = { (GLfloat)_direction[0], (GLfloat)_direction[1], (GLfloat)_direction[2] };
+	GLfloat amb[4] = {  (GLfloat)_ambient[0],    (GLfloat)_ambient[1],    (GLfloat)_ambient[2], 1.0f };
+	GLfloat dif[4] = {  (GLfloat)_diffuse[0],    (GLfloat)_diffuse[1],    (GLfloat)_diffuse[2], 1.0f };
+	GLfloat spe[4] = {  (GLfloat)_specular[0],   (GLfloat)_specular[1],   (GLfloat)_specular[2], 1.0f };
+	glLightfv(GL_LIGHT0 + index, GL_POSITION, pos);
+	glLightfv(GL_LIGHT0 + index, GL_SPOT_DIRECTION, dir);
+	glLightfv(GL_LIGHT0 + index, GL_AMBIENT, amb);
+	glLightfv(GL_LIGHT0 + index, GL_DIFFUSE, dif);
+	glLightfv(GL_LIGHT0 + index, GL_SPECULAR, spe);
+	glEnable(GL_LIGHT0 + index);
 	// Sanity check to make sure that OpenGL state is good
 	ASSERT_OPEN_GL_STATE();	
 }
