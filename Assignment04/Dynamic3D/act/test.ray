@@ -14,7 +14,7 @@
 #ray_file  ../ray/stick.right_shoulder.ray
 #ray_file  ../ray/stick.neck.ray
 #ray_file  ../ray/stick.head.ray
-#key_file  test.key
+#key_file  ../key/backh01.key
 
 #dynamic_affine  ROOT_NATURAL
   #static_affine  0.443611 -0.885044 -0.14109 0 0.697311 0.439746 -0.566022 0 0.562998 0.15271 0.812227 0 0 0 0 1

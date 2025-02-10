@@ -37,38 +37,40 @@ namespace Util
 		///////////////////////////////////////
 		// Compute the matrix exponential here //
 		///////////////////////////////////////
-		Matrix< Dim , Dim > i_m = Identity();
-		Matrix< Dim , Dim > m_pow = Identity();
-		for( int i=1 ; i<=terms ; i++ )
+		/*Implement the parametrization of rotations by the 3x3 skew-symmetric matrices.
+		To do this, you will need to implement the function Matrix::Exp (in Util/geometry.todo.inl) which computes the exponential of a matrix using the first terms terms of the Taylor approximation. Keep in mind that the Taylor series for the exponential function is:
+		exp(X)=1+X+X*X/(2!)+X*X*X/(3!)+...+X**k/(k!)+...
+
+		where X**k represents X raised to the k-th power, and k! is "k factorial" -- k*(k-1)*(k-2)*...*2*1.*/
+		Matrix<Dim, Dim> result = Matrix<Dim, Dim>::Identity();
+		Matrix<Dim, Dim> temp = Matrix<Dim, Dim>::Identity();
+		for (int i = 1; i <= terms; i++)
 		{
-			m_pow *= m;
-			i_m += m_pow / (double)i;
+			temp = temp * m / i;
+			result = result + temp;
 		}
-		return i_m;
+		return result;
+		
 	}
 
-	// template< unsigned int Dim >
-	// Matrix< Dim , Dim > Matrix< Dim , Dim >::closestRotation( void ) const
-	// {
-	// 	///////////////////////////////////////
-	// 	// Compute the closest rotation here //
-	// 	///////////////////////////////////////
-	// 	Matrix< Dim , Dim > Q , R;
-	// 	SVD( Q , R );
-	// 	return Q * R.Transpose();
-	// }
-
-	
 	template< unsigned int Dim >
 	Matrix< Dim , Dim > Matrix< Dim , Dim >::closestRotation( void ) const
 	{
-		///////////////////////////////////////
-		// Compute the closest rotation here //
-		///////////////////////////////////////
-		Matrix<Dim, Dim> r1, d, r2;
-		SVD(r1, d, r2);
-		return r1*(d*r2);
+		/*
+		To do this, you will need to implement the code in Matrix::closestRotation (in Util/geometry.todo.inl) 
+		which returns the rotation closest to the linear transformation described by the Matrix object. 
+		(To help you on your way, the methods Matrix::SVD and Matrix::determinant have already been provided, 
+		giving the SVD decomposition of an arbitrary matrix as the product of a rotation, a diagonal, 
+		and another rotation matrix, and returning the determinant of a matrix. 
+		The Singular Value Decomposition is performed in such a way that the diagonal entries are non-negative 
+		and strictly non-increasing.)
+		*/
+		Matrix< Dim , Dim > r1, d, r2;
+		SVD( r1 , d , r2 );
+		if( r1.determinant() * r2.determinant() < 0 ) for( int i=0 ; i<Dim ; i++ ) r1( i , Dim-1 ) *= -1;
+		return r1 * r2;
 	}
+
 
 	/////////////////
 	// BoundingBox //

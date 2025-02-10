@@ -38,23 +38,24 @@ namespace Util
 	////////////////////////////
 	Matrix3D EulerRotationParameter::operator()(void) const
 	{	
-		double phi = this->parameter[0];
-		double theta = this->parameter[1];
-		double psi = this->parameter[2];
-
+		/*
+		The default representation of a rotation is by a 3x3 (not necessarily rotation) matrix. 
+		Consequently, even if the samples are rotations, interpolation can introduce unwanted scaling (as in the runner's 
+		legs in Data/act/test.ray). Modify the code to support parametrization of rotations using Euler angles.
+		To do this, you will need to implement the operator EulerRotationParameter::operator() (in Util/geometry.todo.cpp) 
+		which transforms the triplet of Euler angles into a rotation matrix.
+		Recall that the three Euler angles define a rotation which is the product of a rotation about the x-axes, 
+		multiplied on the left by a rotation about the y-axes, multiplied on the left by a rotation about the z-axes.
+		*/
+		double phi = parameter[0]*180/M_PI;
+		double theta = parameter[1]*180/M_PI;
+		double psi = parameter[2]*180/M_PI;
 		Matrix3D x, y, z;
-
 		x(0, 0) = 1;
 		x(1, 1) = cos(phi);
 		x(1, 2) = -sin(phi);
 		x(2, 1) = sin(phi);
 		x(2, 2) = cos(phi);
-
-		z(0, 0) = cos(psi);
-		z(0, 1) = -sin(psi);
-		z(1, 0) = sin(psi);
-		z(1, 1) = cos(psi);
-		z(2, 2) = 1;		
 
 		y(0, 0) = cos(theta);
 		y(0, 2) = sin(theta);
@@ -62,9 +63,13 @@ namespace Util
 		y(2, 0) = -sin(theta);
 		y(2, 2) = cos(theta);
 
-		return z * (y * x);
+		z(0, 0) = cos(psi);
+		z(0, 1) = -sin(psi);
+		z(1, 0) = sin(psi);
+		z(1, 1) = cos(psi);
+		z(2, 2) = 1;
+		return z * y * x;
 	}
-
 	/////////////////////////////////
 	// QuaternionRotationParameter //
 	/////////////////////////////////

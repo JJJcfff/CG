@@ -1,6 +1,19 @@
 {
   "editor.fontSize": 18,
   "files.associations": {
-    "typeinfo": "cpp"
+    "typeinfo": "cpp",
+    "atomic": "cpp",
+    "*.tcc": "cpp",
+    "chrono": "cpp",
+    "bitset": "cpp",
+    "memory": "cpp",
+    "random": "cpp",
+    "functional": "cpp",
+    "tuple": "cpp",
+    "__config": "cpp",
+    "__tree": "cpp",
+    "deque": "cpp",
+    "iosfwd": "cpp",
+    "istream": "cpp"
   }
 }

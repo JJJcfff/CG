@@ -14,7 +14,10 @@
 #ray_file  ../ray/muscle.right_shoulder.ray
 #ray_file  ../ray/muscle.neck.ray
 #ray_file  ../ray/muscle.head.ray
-#key_file  ../key/smoke.key
+#key_file  ../key/dance.key
+#key_file  ../key/walk.key
+
+
 
 #dynamic_affine  ROOT_NATURAL
   #shape_list_begin

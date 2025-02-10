@@ -51,49 +51,46 @@ namespace Util
 			}
 			case LINEAR:
 			{
-				t *= samples.size() - 1;
-				int i1 = (int)floor(t);
-				int i2 = i1 + 1;
-				double w = t - i1;
-				return (1 - w) * samples[i1] + w * samples[i2];
+				t *= samples.size();
+				int it1 = (int)floor(t);
+				int it2 = ( it1 + 1 ) % samples.size();
+				t -= it1;
+				return (1-t)*samples[it1] + t*samples[it2];
 				break;
 			}
 			case CATMULL_ROM:
 			{	
-
-				t *= samples.size() - 1;
-				
-				int i0 = (int)floor(t) - 1;
-				if (i0 < 0) i0 = 0;
-				int i1 = i0 + 1;
-				int i2 = i1 + 1;
-				int i3 = i2 + 1;
-				if (i3 >= samples.size()) i3 = samples.size() - 1;
-				
-				double w = t - i1;
-				
-				return 0.5 * ((2 * samples[i1]) + 
-											(-samples[i0] + samples[i2]) * w + 
-											(2 * samples[i0] - 5 * samples[i1] + 4 * samples[i2] - samples[i3]) * w * w + 
-											(-samples[i0] + 3 * samples[i1] - 3 * samples[i2] + samples[i3]) * w * w * w);
+				t *= samples.size();
+				int it1 = (int)floor(t);
+				int it0 = (it1 - 1) % samples.size();
+				int it2 = (it1 + 1) % samples.size();
+				int it3 = (it1 + 2) % samples.size();
+				double u = t - it1;
+				double u2 = u*u;
+				double u3 = u2*u;
+				double c0 = -0.5*u3 + u2 - 0.5*u;
+				double c1 =  1.5*u3 - 2.5*u2 + 1;
+				double c2 = -1.5*u3 + 2*u2 + 0.5*u;
+				double c3 =  0.5*u3 - 0.5*u2;
+				return c0 * samples[it0] + c1 * samples[it1] + c2 * samples[it2] + c3 * samples[it3];
 				break;
 			}
 			case UNIFORM_CUBIC_B_SPLINE:
 			{
-				t *= samples.size() - 1;
-				
-				int i0 = (int)floor(t) - 1;
-				if (i0 < 0) i0 = 0;
-				int i1 = i0 + 1;
-				int i2 = i1 + 1;
-				int i3 = i2 + 1;
-				if (i3 >=	samples.size()) i3 = samples.size() - 1;
-				double w = t - i1;
-
-				return (1.0 / 6.0) * ((samples[i0] * (-1.0 + 3.0 * w - 3.0 * w * w + w * w * w)) +
-				(samples[i1] * (3.0 - 6.0 * w * w + 3.0 * w * w * w)) +
-				(samples[i2] * (3.0 * w + 3.0 * w * w - 3.0 * w * w * w)) +
-				(samples[i3] * (w * w * w)));	
+				//todo; perform uniform cubic b-spline interpolations
+				t *= samples.size();
+				int it1 = (int)floor(t);
+				int it0 = (it1 - 1) % samples.size();
+				int it2 = (it1 + 1) % samples.size();
+				int it3 = (it1 + 2) % samples.size();
+				double u = t - it1;
+				double u2 = u*u;
+				double u3 = u2*u;
+				double c0 = 1.0/6.0 * ( -u3 + 3*u2 - 3*u + 1 );
+				double c1 = 1.0/6.0 * (  3*u3 - 6*u2 + 4 );
+				double c2 = 1.0/6.0 * ( -3*u3 + 3*u2 + 3*u + 1 );
+				double c3 = 1.0/6.0 * (  u3 );
+				return c0 * samples[it0] + c1 * samples[it1] + c2 * samples[it2] + c3 * samples[it3];
 				break;
 			}
 			default:
